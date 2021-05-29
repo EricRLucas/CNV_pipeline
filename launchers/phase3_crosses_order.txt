@@ -20,5 +20,6 @@ bsub -o temp.log -e temp.error ~/scripts/CNV_scripts/scripts/join_species_covera
 
 bsub -o temp.log -e temp.error -R"select[mem>1000] rusage[mem=1000]" -M1000 ~/scripts/CNV_scripts/scripts/join_CNV_output_files_vobs.sh phase3_crosses_cnv 
 
+./run_modal_CNVs_vobs.sh ~/personal/phase3_crosses_cnv/data/sample_metadata_tabs.tsv phase3_crosses_cnv 
 
 
