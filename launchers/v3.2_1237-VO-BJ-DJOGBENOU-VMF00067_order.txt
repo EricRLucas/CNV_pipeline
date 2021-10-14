@@ -1,0 +1,31 @@
+# Order of launchers that were run to call CNVs sampleset v3.2_1237-VO-BJ-DJOGBENOU-VMF00067
+
+workingfolder=~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067
+gsutil_path=gs://vo_agam_release/v3.2 
+logfolder=$workingfolder/folder_setup_log 
+mkdir -p $logfolder 
+speciescalls_folder=species_calls_20200422 
+~/scripts/CNV_scripts/scripts/setup_folder_gsutil.sh $workingfolder $gsutil_path $speciescalls_folder 1237-VO-BJ-DJOGBENOU-VMF00067 > $logfolder/setup_folder_gsutil.log 2>&1 & 
+
+~/scripts/CNV_scripts/launchers/run_coverage_vobs.sh ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_manifest.txt v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+~/scripts/CNV_scripts/launchers/run_diagnostic_reads_vobs.sh ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_manifest.txt v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+# Clean up by deleting the bamfiles folder
+rm -r ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/bamlinks
+
+~/scripts/CNV_scripts/launchers/run_coverage_stats_by_species_vobs.sh v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+~/scripts/CNV_scripts/launchers/run_HMM_vobs.sh v3.2_1237-VO-BJ-DJOGBENOU-VMF00067
+
+bsub -o temp.log -e temp.error ~/scripts/CNV_scripts/scripts/join_species_coverage_variance_files_vobs.sh v3.2_1237-VO-BJ-DJOGBENOU-VMF00067
+
+~/scripts/CNV_scripts/launchers/run_coverage_CNVs_vobs.sh ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_metadata_tabs.tsv v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+~/scripts/CNV_scripts/launchers/run_target_regions_analysis_vobs.sh ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_manifest_known_species.txt ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_speciescalls_tabs.tsv ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_metadata_tabs.tsv v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+bsub -o temp.log -e temp.error -R"select[mem>1000] rusage[mem=1000]" -M1000 ~/scripts/CNV_scripts/scripts/join_CNV_output_files_vobs.sh v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+~/scripts/CNV_scripts/launchers/run_modal_CNVs_vobs.sh ~/personal/v3.2_1237-VO-BJ-DJOGBENOU-VMF00067/data/sample_metadata_tabs.tsv v3.2_1237-VO-BJ-DJOGBENOU-VMF00067 
+
+# Note. Later, the run_target_regions_analysis script was rerun in order to fix the Cyp6mz_Dupz labelling issue. Another small change was also made to the target_regions_analysis.r script (changing one the 5 nucleotide sequence used to detect Dup10). This doesn't make any difference to any of the results in the .csv files (just in the number of supporting reads, which is recorded in the Rdata file, but not in any of the presence / absence results which are in the csv). The old scripts were moved to target_regions_anlaysis_old.*. The old results were moved into the folder target_regions_analysis_old.

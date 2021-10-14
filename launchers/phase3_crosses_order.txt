@@ -20,6 +20,7 @@ bsub -o temp.log -e temp.error ~/scripts/CNV_scripts/scripts/join_species_covera
 
 bsub -o temp.log -e temp.error -R"select[mem>1000] rusage[mem=1000]" -M1000 ~/scripts/CNV_scripts/scripts/join_CNV_output_files_vobs.sh phase3_crosses_cnv 
 
-./run_modal_CNVs_vobs.sh ~/personal/phase3_crosses_cnv/data/sample_metadata_tabs.tsv phase3_crosses_cnv 
+~/scripts/CNV_scripts/launchers/run_modal_CNVs_vobs.sh ~/personal/phase3_crosses_cnv/data/sample_metadata_tabs.tsv phase3_crosses_cnv 
 
+# Note. Later, the run_target_regions_analysis script was rerun in order to fix the Cyp6mz_Dupz labelling issue. Another small change was also made to the target_regions_analysis.r script (changing one the 5 nucleotide sequence used to detect Dup10). This doesn't make any difference to any of the results in the .csv files (just in the number of supporting reads, which is recorded in the Rdata file, but not in any of the presence / absence results which are in the csv). The old scripts were moved to target_regions_anlaysis_old.*. The old results were moved into the folder target_regions_analysis_old.
 
