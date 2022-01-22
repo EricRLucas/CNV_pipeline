@@ -56,7 +56,7 @@ calculate.mode <- function(copy.number.vector){
 
 get.gene.mode <- function(target.region, hmm.data, window.size = 300){
 	target.region <- as.numeric(target.region)
-	hmm.in.region <- subset(hmm.data, Position >= (target.region[1] - window.size) & Position < target.region[2])[, sample.names]
+	hmm.in.region <- subset(hmm.data, Position >= (target.region[1] - window.size) & Position < target.region[2])[, sample.names, drop = F]
 	gene.mode <- apply(hmm.in.region, 2, calculate.mode)
 	gene.mode
 }
@@ -66,7 +66,10 @@ modal.copy.number.change <- function(chrom, expected.copy.number){
 	cat('\tLoading hmm output files.\n')
 	full.table <- load.hmm.files(sample.names, chrom)
 	cat('\tCalculating modal copy number change.\n')
-	modal.copy.number.change <- apply(gene.coordinates.list[[chrom]], 1, get.gene.mode, hmm.data = full.table) - expected.copy.number
+	copy.number.change <- apply(gene.coordinates.list[[chrom]], 1, get.gene.mode, hmm.data = full.table) - expected.copy.number
+	if (!is.matrix(copy.number.change))
+		copy.number.change <- matrix(copy.number.change, nrow = 1, dimnames = list(sample.names, names(copy.number.change)))
+	copy.number.change
 }
 
 modal.copy.number <- data.frame(do.call(cbind, mapply(modal.copy.number.change, chroms, list(2, 2, 2, 2, expected.copy.number.on.X))))

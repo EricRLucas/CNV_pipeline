@@ -44,7 +44,7 @@ species_manifest (){
 	IFS=$oldIFS
 }
 
-# So now we apply that function, and then split the sample names into two files based
+# So now we apply that function, and then split the sample names into different files based
 # on column 2 (which is guaranteed to be the species calls, as long as the column names
 # are always the same). 
 cat $folder_location/data/$speciescalls_filename | species_manifest | awk -v output_folder="$folder_location/data" '{print $1 > output_folder"/sample_manifest_"$2".txt"}'
@@ -62,17 +62,4 @@ bamfiles (){
 }
 
 cat $folder_location/data/$bampaths_filename | bamfiles > $folder_location/data/bampaths.csv
-
-# Create a folder for the bamfiles
-mkdir -p $folder_location/bamlinks
-# Download all the required bams
-cd $folder_location/bamlinks
-while IFS=$'\t' read sample bampath
-do 
-	curl ${bampath} > ${sample}.bam
-	curl ${bampath}.bai > ${sample}.bam.bai
-done < ../data/bampaths.csv
-
-
-
 

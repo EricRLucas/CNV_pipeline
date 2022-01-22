@@ -244,7 +244,7 @@ cat('Processing HMM files\n')
 # We'll use the first sample to get the list of posistions that remained after window filtering
 hmm.positions <- load.hmm.file(sample.names[1])$Position
 # Now load up all the samples and look for CNVs
-goodlr.duplications.list.indices <- mcmapply(process.sample, sample.names, threshold = threshold.copy.number, n = min.dup.length, likelihood.threshold = lik.thresh, mc.cores = n.cores)
+goodlr.duplications.list.indices <- mcmapply(process.sample, sample.names, threshold = threshold.copy.number, n = min.dup.length, likelihood.threshold = lik.thresh, mc.cores = n.cores, SIMPLIFY = F)
 # Because I am not 100% sure that mcmapply will output the data in the right order, the next line ensures the order
 # is correct
 goodlr.duplications.list.indices <- goodlr.duplications.list.indices[sample.names]

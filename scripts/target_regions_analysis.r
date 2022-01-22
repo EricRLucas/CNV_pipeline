@@ -35,9 +35,9 @@ num.cores <- as.numeric(arg.values[9])
 load.hmm.file <- function(sample.name, folder = '.'){
 	all.files <- list.files(folder)
 	# Find the file corresponding to this sample
-	this.file <- paste(folder, grep(sample.name, all.files, value = T), sep = '/')
-	if (length(this.file) == 0)
+	if (length(grep(sample.name, all.files, value = T)) == 0)
 		stop(paste('No matching files were found for sample', sample.name))
+	this.file <- paste(folder, grep(sample.name, all.files, value = T), sep = '/')
 	if (length(this.file) > 1)
 		stop(paste('More than one matching file were found for sample', sample.name))
 	# Load the file 
