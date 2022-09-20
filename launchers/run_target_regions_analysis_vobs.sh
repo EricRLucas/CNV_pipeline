@@ -20,8 +20,8 @@ bsub -o $logfolder/target_regions_analysis_output_%J.txt \
      -e $errorfolder/target_regions_analysis_error_%J.txt \
      -q long \
      -n $ncores \
-     -R"select[mem>2000] rusage[mem=2000] span[hosts=1]" \
-     -M2000 \
+     -R"select[mem>10000] rusage[mem=10000] span[hosts=1]" \
+     -M10000 \
      $scriptsfolder/target_regions_analysis_vobs.sh $workingfolder \
                                                     $samplelist \
                                                     $species_id_file \

@@ -20,6 +20,8 @@ for species in ${specieslist[@]}
 do
 	bsub -o $logfolder/${species}_coverage_stats_log.txt \
 		 -e $errorfolder/${species}_coverage_stat_error.txt \
+		 -R"select[mem>500] rusage[mem=500] span[hosts=1]" \
+		 -M500 \
 		 ${scriptsfolder}/get_coverage_stats_by_sample_set_vobs.sh $workingfolder \
 															       $manifestfolder/sample_manifest_${species}.txt \
 															       $datafolder/windowed_accessibility/mean_accessibility_${species}.csv \

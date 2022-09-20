@@ -38,8 +38,8 @@ do
 			 -e $errorfolder/CNV_analysis_error_${chrom}_${species}_%J.txt \
 			 -n $ncores \
 			 -q long \
-			 -R"select[mem>200] rusage[mem=200] span[hosts=1]" \
-			 -M200 \
+			 -R"select[mem>500] rusage[mem=500] span[hosts=1]" \
+			 -M500 \
 			 ${scriptsfolder}/coverage_CNVs_vobs.sh $coveragefolder \
 											        $sample_manifest \
 											        $chrom \

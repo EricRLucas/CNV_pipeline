@@ -29,8 +29,8 @@ do
 bsub -o $logfolder/modal_CNVs_${species}_%J.txt \
      -e $errorfolder/modal_CNVs_${species}_%J.txt \
      -q long \
-     -R"select[mem>500] rusage[mem=500] span[hosts=1]" \
-     -M500 \
+     -R"select[mem>2000] rusage[mem=2000] span[hosts=1]" \
+     -M2000 \
      ${scriptsfolder}/modal_CNVs.sh $coveragefolder \
 	                                $sample_manifest \
 		                            $species \

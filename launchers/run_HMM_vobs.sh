@@ -40,6 +40,8 @@ do
 
 		bsub -o $logfolder/HMM_output_${species}_%J.txt \
 			 -e $errorfolder/HMM_error_${species}_%J.txt \
+			 -R"select[mem>500] rusage[mem=500] span[hosts=1]" \
+			 -M500 \
 			 ${scriptsfolder}/coverage_HMM_vobs.sh $coveragefolder \
 											       $sample_manifest \
 											       $chrom \
