@@ -1,0 +1,41 @@
+# Order of launchers that were run to call CNVs in release v3.7
+
+{sampleset} represents any one of:
+1190-VO-GH-AMENGA-ETEGO-VMF00088
+1190-VO-GH-AMENGA-ETEGO-VMF00102
+1237-VO-BJ-DJOGBENOU-VMF00212
+1246-VO-TZ-KABULA-VMF00185
+1246-VO-TZ-KABULA-VMF00197
+1270-VO-MULTI-PAMGEN-VMF00193-VMF00202
+1281-VO-CM-CHRISTOPHE-VMF00208
+barron-2019
+crawford-2016
+
+~/scripts/CNV_scripts/scripts/setup_folder_gsutil_nobams_wrapper_newspeciescalls.sh v3.7 {sampleset}
+
+~/scripts/CNV_scripts/launchers/run_coverage_and_diagnostic_reads_vobs.sh ~/personal/v3.7_{sampleset}/data/bampaths.csv 30 v3.7_{sampleset} 
+
+# That runs a job array with one job per sample. Some of these jobs fail arbitrarily, either because the bam files fail to download, or because the node arbitrarily maxes out on memory (even though it gets allocated more than 10 times more memory than it needs). So after each run, we need to check how many samples failed, and then run the above command again for the failing samples. We use the following lines to do this. The first line returns a file containing the bampaths for just the failing samples, and then the second line just reruns the above command with the new bampaths file.
+
+R --slave -f ~/scripts/CNV_scripts/scripts/find_failed_samples.r --args v3.7_{sampleset} ~/personal/v3.7_{sampleset}/data/bampaths.csv 5 10 ~/personal/v3.7_{sampleset}/data/bampaths_failed_samples_{x}.csv > ~/personal/v3.7_{sampleset}/data/find_failed_samples_{x}.log 2>&1 &
+~/scripts/CNV_scripts/launchers/run_coverage_and_diagnostic_reads_vobs.sh ~/personal/v3.7_{sampleset}/data/bampaths_failed_samples_{x}.csv 30 v3.7_{sampleset}
+
+# The above two lines are repeated, incrementing {x}, until all samples have been successfully processed. 
+
+~/scripts/CNV_scripts/launchers/run_coverage_stats_by_species_vobs.sh v3.7_{sampleset} 
+
+~/scripts/CNV_scripts/launchers/run_HMM_vobs.sh v3.7_{sampleset}
+
+bsub -o temp.log -e temp.error ~/scripts/CNV_scripts/scripts/join_species_coverage_variance_files_vobs.sh v3.7_{sampleset}
+
+# Here one of the sample sets had quotes in the metadata file, which confused the CNV_analysis.r script. I changed that script, but it shouldn't make a difference to any of the previous sample sets. Nevertheless, the previous sample sets (all previous releases, and all 3.7 sample sets before 1270-VO-MULTI-PAMGEN-VMF00193-VMF00202) were in fact run with the script that is now called CNV_analysis_pre_3.7.r. 
+~/scripts/CNV_scripts/launchers/run_coverage_CNVs_vobs.sh ~/personal/v3.7_{sampleset}/data/sample_metadata_tabs.tsv v3.7_{sampleset} 
+
+# Here one of the sample sets had quotes in the metadata file, which confused the target_regions_analysis.r script. I changed that script, but it shouldn't make a difference to any of the previous sample sets. Nevertheless, the previous sample sets (all previous releases, and all 3.7 sample sets before 1270-VO-MULTI-PAMGEN-VMF00193-VMF00202) were in fact run with the script that is now called target_regions_analysis_pre_3.7.r. 
+~/scripts/CNV_scripts/launchers/run_target_regions_analysis_vobs.sh ~/personal/v3.7_{sampleset}/data/sample_manifest_known_species.txt ~/personal/v3.7_{sampleset}/data/sample_speciescalls_tabs.tsv ~/personal/v3.7_{sampleset}/data/sample_metadata_tabs.tsv v3.7_{sampleset} 
+
+bsub -o temp.log -e temp.error -R"select[mem>1000] rusage[mem=1000]" -M1000 ~/scripts/CNV_scripts/scripts/join_CNV_output_files_vobs.sh v3.7_{sampleset} 
+
+# Here one of the sample sets had quotes in the metadata file, which confused the modal_cnv.r script. I changed that script, but it shouldn't make a difference to any of the previous sample sets. Nevertheless, the previous sample sets (all previous releases, and all 3.7 sample sets before 1270-VO-MULTI-PAMGEN-VMF00193-VMF00202) were in fact run with the script that is now called modal_cnv_pre_3.7.r. 
+~/scripts/CNV_scripts/launchers/run_modal_CNVs_vobs.sh ~/personal/v3.7_{sampleset}/data/sample_metadata_tabs.tsv v3.7_{sampleset} 
+

@@ -15,7 +15,7 @@ gene.regions.file <- arg.values[2]
 all.gene.coordinates <- read.table(gene.regions.file, sep = '\t', header = T, row.names = 1)
 
 meta.file <- arg.values[3]
-meta <- read.table(meta.file, sep = '\t', header = T, row.names = 1, quote = '"', comment.char = '')[sample.names, ]
+meta <- read.table(meta.file, sep = '\t', header = T, row.names = 1, quote = '', comment.char = '')[sample.names, ]
 expected.copy.number.on.X <- c(2, 1)[(meta$sex_call == 'M') + 1]
 
 # Get the species calls

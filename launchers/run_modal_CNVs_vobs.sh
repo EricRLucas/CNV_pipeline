@@ -31,11 +31,12 @@ bsub -o $logfolder/modal_CNVs_${species}_%J.txt \
      -q long \
      -R"select[mem>2000] rusage[mem=2000] span[hosts=1]" \
      -M2000 \
-     ${scriptsfolder}/modal_CNVs.sh $coveragefolder \
-	                                $sample_manifest \
-		                            $species \
-	                                $coverage_variance_file \
-	                                $metadata_file \
-	                                $outputfolder
+     ${scriptsfolder}/modal_CNVs_vobs.sh $coveragefolder \
+	                                     $sample_manifest \
+		                                 $species \
+	                                     $coverage_variance_file \
+	                                     $metadata_file \
+	                                     $outputfolder \
+	                                     $gene_coordinates_file
 
 done
