@@ -13,6 +13,8 @@ ncores=5
 logfolder=$diagnostic_reads_folder/logfolders/target_regions_analysis
 errorfolder=$diagnostic_reads_folder/errorfolders/target_regions_analysis
 
+echo $logfolder 
+
 mkdir -p $logfolder
 mkdir -p $errorfolder
 
