@@ -39,3 +39,7 @@ bsub -o temp.log -e temp.error -R"select[mem>1000] rusage[mem=1000]" -M1000 ~/sc
 # Here one of the sample sets had quotes in the metadata file, which confused the modal_cnv.r script. I changed that script, but it shouldn't make a difference to any of the previous sample sets. Nevertheless, the previous sample sets (all previous releases, and all 3.7 sample sets before 1270-VO-MULTI-PAMGEN-VMF00193-VMF00202) were in fact run with the script that is now called modal_cnv_pre_3.7.r. 
 ~/scripts/CNV_scripts/launchers/run_modal_CNVs_vobs.sh ~/personal/v3.7_{sampleset}/data/sample_metadata_tabs.tsv v3.7_{sampleset} 
 
+# For sample set 1246-VO-TZ-KABULA-VMF00185, we also ran the following to get the coeae CNVs
+~/scripts/CNV_scripts/launchers/run_coeae_diagnostic_reads_vobs.sh ~/personal/v3.7_1246-VO-TZ-KABULA-VMF00185/data/bampaths.csv 30 v3.7_1246-VO-TZ-KABULA-VMF00185 
+
+~/scripts/CNV_scripts/launchers/run_target_regions_analysis_vobs_extras_1.sh v3.7_1246-VO-TZ-KABULA-VMF00185

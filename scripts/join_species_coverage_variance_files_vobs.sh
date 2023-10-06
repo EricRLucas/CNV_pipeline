@@ -3,7 +3,7 @@ study=$1
 # turn on extended globbing
 shopt -s extglob
 
-coveragefolder=/lustre/scratch118/malaria/team112/personal/el10/$study/coverage
+coveragefolder=/lustre/scratch126/gsu/team112/personal/el10/$study/coverage
 coverage_variance_files=($(ls $coveragefolder/coverage_variance_masked_09_05_!(all).csv))
 combined_coverage_variance_file=$coveragefolder/coverage_variance_masked_09_05_all.csv
 

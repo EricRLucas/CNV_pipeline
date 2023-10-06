@@ -2,7 +2,7 @@ metadata_file=$1
 study=$2
 
 scriptsfolder=~/scripts/CNV_scripts/scripts
-rootfolder=/lustre/scratch118/malaria/team112/personal/el10
+rootfolder=/lustre/scratch126/gsu/team112/personal/el10
 coveragefolder=$rootfolder/$study/coverage
 manifestfolder=$rootfolder/$study/data
 coverage_variance_file=$coveragefolder/coverage_variance_masked_09_05_all.csv
@@ -38,8 +38,8 @@ do
 			 -e $errorfolder/CNV_analysis_error_${chrom}_${species}_%J.txt \
 			 -n $ncores \
 			 -q long \
-			 -R"select[mem>500] rusage[mem=500] span[hosts=1]" \
-			 -M500 \
+			 -R"select[mem>1000] rusage[mem=1000] span[hosts=1]" \
+			 -M1000 \
 			 ${scriptsfolder}/coverage_CNVs_vobs.sh $coveragefolder \
 											        $sample_manifest \
 											        $chrom \

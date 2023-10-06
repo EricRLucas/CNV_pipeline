@@ -1,7 +1,7 @@
 study=$1
 
 scriptsfolder=~/scripts/CNV_scripts/scripts
-rootfolder=/lustre/scratch118/malaria/team112/personal/el10
+rootfolder=/lustre/scratch126/gsu/team112/personal/el10
 coveragefolder=$rootfolder/$study/coverage
 manifestfolder=$rootfolder/$study/data
 logfolder=$coveragefolder/logfolders/HMM

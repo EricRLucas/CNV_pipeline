@@ -1,6 +1,6 @@
 study=$1
 
-rootfolder=/lustre/scratch118/malaria/team112/personal/el10
+rootfolder=/lustre/scratch126/gsu/team112/personal/el10
 logfolder=$rootfolder/$study/coverage/logfolders/stats_by_species
 errorfolder=$rootfolder/$study/coverage/errorfolders/stats_by_species
 workingfolder=$rootfolder/$study/coverage

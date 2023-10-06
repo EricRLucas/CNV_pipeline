@@ -2,7 +2,7 @@ metadata_file=$1
 study=$2
 
 scriptsfolder=~/scripts/CNV_scripts/scripts
-rootfolder=/lustre/scratch118/malaria/team112/personal/el10
+rootfolder=/lustre/scratch126/gsu/team112/personal/el10
 coveragefolder=$rootfolder/$study/coverage
 manifestfolder=$rootfolder/$study/data
 coverage_variance_file=$coveragefolder/coverage_variance_masked_09_05_all.csv
@@ -29,8 +29,8 @@ do
 bsub -o $logfolder/modal_CNVs_${species}_%J.txt \
      -e $errorfolder/modal_CNVs_${species}_%J.txt \
      -q long \
-     -R"select[mem>2000] rusage[mem=2000] span[hosts=1]" \
-     -M2000 \
+     -R"select[mem>3000] rusage[mem=3000] span[hosts=1]" \
+     -M3000 \
      ${scriptsfolder}/modal_CNVs_vobs.sh $coveragefolder \
 	                                     $sample_manifest \
 		                                 $species \
