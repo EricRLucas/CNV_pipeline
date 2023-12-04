@@ -89,7 +89,11 @@ for al in alignments:
 	if al.query_name not in done_reads:
 		done_reads += [al.query_name]
 		# Look for genes that map discordantly.
-		this_mate = bambam.mate(al)
+		try:
+			this_mate = bambam.mate(al)
+		except:
+			print('read ' + al.query_name + ' has no mate. Skipping.')
+			continue
 		if bambam.references[this_mate.rname] != chromosome:
 			pair_is_crosschrom = True
 		else:
